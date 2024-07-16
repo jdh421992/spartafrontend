@@ -229,6 +229,13 @@
         import { getDocs } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
         const firebaseConfig = {
+            apiKey: "AIzaSyBvJaCUzgFlWMQP5XObgS5JeU4cjOsf_JQ",
+            authDomain: "jdh4292.firebaseapp.com",
+            projectId: "jdh4292",
+            storageBucket: "jdh4292.appspot.com",
+            messagingSenderId: "225378177000",
+            appId: "1:225378177000:web:08ca23f2c8405c45b75e5d",
+            measurementId: "G-TBXKKYBYQ0"
             // https://firebase.google.com/?hl=ko
             // 파이어베이스에 접속한 후 프로젝트 설정에 들어갑니다.
             // 본인 firebaseConfig 내용으로 설정해 줍니다.
@@ -239,11 +246,19 @@
 
         // 데이터 추가
         $("#addBtn").click(async function () {
+            let image = $('#floatingInput').val();
+            let title = $('#foodTitle').val();
+            let comment = $('#floatingTextarea').val();
+            let starval = $('#inputGroupSelect03').val();
 
             // title_input, comment_input, image_input id를 가진 HTML 요소에서 값을 가져와서 title, comment, image 변수에 저장해 주세요.
 
             try {
                 const docRef = await addDoc(collection(db, "foods"), {
+                    'image': image,
+                    'title': title,
+                    'comment': comment,
+                    'starval': starval
 
                     // 각각 담은 변수를 컬렉션 필드에 title, comment, image에 각각 넣어주세요.
 
@@ -264,13 +279,26 @@
 
             let title = doc.data().title;
             let comment = doc.data().comment;
-            let star = "⭐".repeat(doc.data().star);
+            let star = "⭐".repeat(doc.data().starval);
             let image = doc.data().image;
 
             // 문서의 title, comment, image, star 필드에서 데이터를 추출한 변수명을 갖고,
             // tempHtml 문자열에 각 데이터를 포함한 카드의 HTML 코드를 생성하세요.
 
-            $(".row-cols-3").append(tempHtml);
+            let tempHtml = `
+            <div class="col">
+                <div class="card h-100">
+                    <img src="${image}"
+                        class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h4 class="card-title">${title}</h4>
+                        <p class="card-text">${comment}</p>
+                        <p>${star}</p>
+                        <button class="card-button">주문하기</button>
+                    </div>
+                </div>
+            </div>`;
+            $("#cardbox1").append(tempHtml);
         });
 
     </script>
@@ -359,43 +387,7 @@
 
     <!-- 부트스트랩 카드 적용-->
     <div class="mycards">
-        <div class="row row-cols-3 row-cols-md-3">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2162&q=80"
-                        class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4 class="card-title">하와이안 피자</h4>
-                        <p class="card-text">이건 꼭 먹어봐야 해요</p>
-                        <p>⭐⭐⭐⭐</p>
-                        <button class="card-button">주문하기</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://images.unsplash.com/photo-1481070555726-e2fe8357725c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2235&q=80"
-                        class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4 class="card-title">크리스피 버거</h4>
-                        <p class="card-text">너무 달콤해요!</p>
-                        <p>⭐⭐⭐</p>
-                        <button class="card-button">주문하기</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80"
-                        class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h4 class="card-title">해물 라면</h4>
-                        <p class="card-text">국물이 끝내줘요!</p>
-                        <p>⭐⭐⭐⭐⭐</p>
-                        <button class="card-button">주문하기</button>
-                    </div>
-                </div>
-            </div>
+        <div class="row row-cols-3 row-cols-md-3" id="cardbox1">
         </div>
     </div>
     </div>
